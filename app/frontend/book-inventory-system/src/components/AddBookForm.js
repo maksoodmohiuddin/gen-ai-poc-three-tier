@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import './AddBookForm.css';
 
 function AddBookForm() {
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [description, setDescription] = useState('');
-  const [publishedDate, setPublishedDate] = useState('');
+  const [title, setTitle] = useState(''); // State for storing the book title
+  const [author, setAuthor] = useState(''); // State for storing the author name
+  const [description, setDescription] = useState(''); // State for storing the book description
+  const [publishedDate, setPublishedDate] = useState(''); // State for storing the published date
 
   const handleSubmit = async (e) => {
     e.preventDefault();

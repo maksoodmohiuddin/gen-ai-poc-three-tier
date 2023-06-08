@@ -9,6 +9,7 @@ function BookDetails() {
   const [publishedDate, setPublishedDate] = useState('');
 
   useEffect(() => {
+    // Fetch book details when the component mounts
     fetchBookDetails();
   }, []);
 
@@ -59,8 +60,10 @@ function BookDetails() {
 
   return (
     <div>
+      {/* Display the book details */}
       <h2 style={{ fontSize: '24px', marginBottom: '20px' }}>Book Details</h2>
       <p>Book ID: {id}</p>
+      {/* Form for updating book details */}
       <form onSubmit={handleFormSubmit}>
         <div>
           <label htmlFor="title" style={{ fontWeight: 'bold' }}>Title:</label>
