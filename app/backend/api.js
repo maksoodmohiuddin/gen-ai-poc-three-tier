@@ -19,9 +19,13 @@ const pool = new Pool({
 
 // GET all books
 app.get('/api/books', async (req, res) => {
+  const { page, limit } = req.query;
+
   try {
-    const query = 'SELECT * FROM books';
-    const result = await pool.query(query);
+    const offset = (page - 1) * limit;
+    const query = `SELECT * FROM books ORDER BY id LIMIT $1 OFFSET $2`;
+    const values = [limit, offset];
+    const result = await pool.query(query, values);
 
     res.json(result.rows);
   } catch (error) {
