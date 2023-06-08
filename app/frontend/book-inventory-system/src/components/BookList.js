@@ -21,7 +21,7 @@ function BookList() {
       const response = await fetch(`http://localhost:3001/api/books?page=${page}&limit=10`);
       const data = await response.json();
       setBooks(data); // Set the books state with the new data
-      setPage(prevPage => prevPage + 1);
+      setPage(prevPage => page + 1);
     } catch (error) {
       console.error('Error fetching books:', error);
     }

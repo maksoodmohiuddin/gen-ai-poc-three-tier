@@ -30,16 +30,19 @@ function AddBookForm() {
 
       if (response.ok) {
         console.log('New book created successfully');
+        alert('New book created successfully!');
         // Clear form fields after successful creation
         setTitle('');
         setAuthor('');
         setDescription('');
         setPublishedDate('');
       } else {
+        alert('Failed to create new book');
         console.error('Failed to create new book');
       }
     } catch (error) {
       console.error('Error creating new book:', error);
+      alert('Error creating new book:', error);
     }
   };
 
