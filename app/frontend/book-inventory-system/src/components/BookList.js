@@ -1,24 +1,97 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import './BookList.css';
 
 function BookList() {
-  // Sample book data
-  const books = [
-    { id: 1, title: 'Book 1', author: 'Author 1' },
-    { id: 2, title: 'Book 2', author: 'Author 2' },
-    { id: 3, title: 'Book 3', author: 'Author 3' },
-  ];
+  const [books, setBooks] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+    setIsLoading(true);
+  
+    try {
+      const response = await fetch(`http://localhost:3001/api/books?page=${page}&limit=10`);
+      const data = await response.json();
+      setBooks(data); // Set the books state with the new data
+      setPage(prevPage => prevPage + 1);
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    }
+  
+    setIsLoading(false);
+  };
+  
+
+  const handleScroll = () => {
+    if (containerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+
+      if (scrollTop + clientHeight >= scrollHeight - 20 && !isLoading) {
+        setIsLoading(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!isLoading) return;
+
+    fetchBooks();
+  }, [isLoading]); // Only fetch books when isLoading changes
+
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (!container) return;
+
+    container.addEventListener('scroll', handleScroll);
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
-    <div>
+    <div className="book-list-container" ref={containerRef}>
       <h2>Book List</h2>
-      <ul className="book-list">
-        {books.map(book => (
-          <li key={book.id}>
-            <a href={`/book/${book.id}`}>{book.title}</a>
-          </li>
-        ))}
-      </ul>
+      <table className="book-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {books.map(book => (
+            <tr key={book.id}>
+              <td>{book.title}</td>
+              <td>{book.author}</td>
+              <td>{book.published_date}</td>
+              <td>
+                <Link to={`/book/${book.id}`}>Edit</Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {isLoading && <div className="loading">Loading...</div>}
+      {!isLoading && books.length === 0 && <div className="empty">No books found.</div>}
+      {!isLoading && books.length > 0 && (
+        <button
+          className="load-more-button"
+          onClick={() => setIsLoading(true)}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Loading...' : 'Load More'}
+        </button>
+      )}
     </div>
   );
 }
