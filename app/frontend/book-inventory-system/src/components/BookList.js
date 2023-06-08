@@ -61,6 +61,13 @@ function BookList() {
     };
   }, []);
 
+  // Function to format the published date to display only the date
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString(undefined, options);
+  };
+
   return (
     <div className="book-list-container" ref={containerRef}>
       {/* Render the book list */}
@@ -79,7 +86,7 @@ function BookList() {
             <tr key={book.id}>
               <td>{book.title}</td>
               <td>{book.author}</td>
-              <td>{book.published_date}</td>
+              <td>{formatDate(book.published_date)}</td>
               <td>
                 {/* Link to edit the book */}
                 <Link to={`/book/${book.id}`}>Edit</Link>
