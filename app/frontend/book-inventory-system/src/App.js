@@ -10,10 +10,14 @@ function App() {
   return (
     <Router>
       <div className="app-container">
+        {/* Render the Navigation component */}
         <Navigation />
         <Routes>
+          {/* Define a route for the BookList component */}
           <Route path="/" element={<BookList />} />
+          {/* Define a route for the BookDetails component with a dynamic ID parameter */}
           <Route path="/book/:id" element={<BookDetails />} />
+          {/* Define a route for the AddBookForm component */}
           <Route path="/add" element={<AddBookForm />} />
         </Routes>
       </div>
