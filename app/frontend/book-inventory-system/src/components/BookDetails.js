@@ -20,7 +20,9 @@ function BookDetails() {
       setTitle(data.title);
       setAuthor(data.author);
       setDescription(data.description);
-      setPublishedDate(data.published_date);
+      // setPublishedDate(data.published_date);
+      const formattedDate = new Date(data.published_date).toISOString().substring(0, 10);
+      setPublishedDate(formattedDate);
     } catch (error) {
       console.error('Error fetching book details:', error);
     }
@@ -47,12 +49,15 @@ function BookDetails() {
 
       if (response.ok) {
         console.log('Book updated successfully');
+        alert('Book updated successfully');
         // Handle success, such as showing a success message or redirecting
       } else {
         console.error('Failed to update book');
+        alert('Failed to update book');
         // Handle error, such as showing an error message
       }
     } catch (error) {
+      alert('Error updating book:', error);
       console.error('Error updating book:', error);
       // Handle error, such as showing an error message
     }
