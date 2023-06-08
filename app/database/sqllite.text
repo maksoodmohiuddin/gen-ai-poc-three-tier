@@ -1,0 +1,23 @@
+INSERT INTO books (title, author, description, published_date)
+VALUES
+  ('Title 11', 'Author 11', 'Description 11', '2023-01-01'),
+  ('Title 12', 'Author 12', 'Description 12', '2023-01-02'),
+  ('Title 13', 'Author 13', 'Description 13', '2023-01-03'),
+  ('Title 14', 'Author 14', 'Description 14', '2023-01-01'),
+  ('Title 15', 'Author 15', 'Description 15', '2023-01-02'),
+  ('Title 16', 'Author 16', 'Description 16', '2023-01-03'),
+  ('Title 17', 'Author 17', 'Description 17', '2023-01-01'),
+  ('Title 18', 'Author 18', 'Description 18', '2023-01-02'),
+  ('Title 19', 'Author 19', 'Description 19', '2023-01-03'),
+  ('Title 20', 'Author 20', 'Description 20', '2023-04-10');
+  ('Title 21', 'Author 21', 'Description 21', '2023-01-01'),
+  ('Title 22', 'Author 22', 'Description 22', '2023-01-02'),
+  ('Title 23', 'Author 23', 'Description 23', '2023-01-03'),
+  ('Title 24', 'Author 24', 'Description 24', '2023-01-01'),
+  ('Title 25', 'Author 25', 'Description 25', '2023-01-02'),
+  ('Title 26', 'Author 26', 'Description 26', '2023-01-03'),
+  ('Title 27', 'Author 27', 'Description 27', '2023-01-01'),
+  ('Title 28', 'Author 28', 'Description 28', '2023-01-02'),
+  ('Title 29', 'Author 29', 'Description 29', '2023-01-03'),
+  ('Title 30', 'Author 20', 'Description 20', '2023-04-10');
+  
