@@ -1,25 +1,39 @@
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const app = express(); // Create an instance of the Express application
 
-app.use(cors()); // Enable CORS
+// Enable CORS
+app.use(cors());
 
+// Set security-related HTTP headers
+app.use(helmet());
+
+// Apply rate limiting to prevent abuse or brute-force attacks
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
+
+// Create a PostgreSQL pool for database connections
 const pool = new Pool({
   user: 'genai',
   host: 'localhost',
   database: 'books',
   password: 'genai',
   port: 5432, // replace with your PostgreSQL port number
-}); // Create a PostgreSQL pool for database connections
+});
 
 app.get('/api/books', async (req, res) => {
   const { page, limit } = req.query; // Extract 'page' and 'limit' from query parameters
 
   try {
     const offset = (page - 1) * limit; // Calculate the offset based on page and limit
-    const query = `SELECT * FROM books ORDER BY id LIMIT $1 OFFSET $2`; // SQL query to retrieve books with pagination
+    const query = 'SELECT * FROM books ORDER BY id LIMIT $1 OFFSET $2'; // SQL query to retrieve books with pagination
     const values = [limit, offset]; // Parameter values for the query
     const result = await pool.query(query, values); // Execute the query using the database pool
 
@@ -54,8 +68,10 @@ app.post('/api/books', async (req, res) => {
   const { title, author, description, published_date } = req.body; // Extract book details from the request body
 
   try {
-    const query = 'INSERT INTO books (title, author, description, published_date) VALUES ($1, $2, $3, $4)'; // SQL query to insert a new book
-    await pool.query(query, [title, author, description, published_date]); // Execute the query using the database pool
+    const query =
+      'INSERT INTO books (title, author, description, published_date) VALUES ($1, $2, $3, $4)'; // SQL query to insert a new book
+    const values = [title, author, description, published_date]; // Parameter values for the query
+    await pool.query(query, values); // Execute the query using the database pool
 
     res.sendStatus(201); // Send a 201 response (Created) to indicate successful creation
   } catch (error) {
@@ -69,8 +85,10 @@ app.put('/api/books/:id', async (req, res) => {
   const { title, author, description, published_date } = req.body; // Extract updated book details from the request body
 
   try {
-    const query = 'UPDATE books SET title = $1, author = $2, description = $3, published_date = $4 WHERE id = $5'; // SQL query to update a specific book by ID
-    await pool.query(query, [title, author, description, published_date, bookId]); // Execute the query using the database pool
+    const query =
+      'UPDATE books SET title = $1, author = $2, description = $3, published_date = $4 WHERE id = $5'; // SQL query to update a specific book by ID
+    const values = [title, author, description, published_date, bookId]; // Parameter values for the query
+    await pool.query(query, values); // Execute the query using the database pool
 
     res.sendStatus(200); // Send a 200 response (OK) to indicate successful update
   } catch (error) {
@@ -84,7 +102,8 @@ app.delete('/api/books/:id', async (req, res) => {
 
   try {
     const query = 'DELETE FROM books WHERE id = $1'; // SQL query to delete a book by ID
-    await pool.query(query, [bookId]); // Execute the query using the database pool
+    const values = [bookId]; // Parameter values for the query
+    await pool.query(query, values); // Execute the query using the database pool
 
     res.sendStatus(204); // Send a 204 response (No Content) to indicate successful deletion
   } catch (error) {
