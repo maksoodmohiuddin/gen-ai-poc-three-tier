@@ -14,18 +14,19 @@ function BookList() {
 
   const fetchBooks = async () => {
     setIsLoading(true);
-
+  
     try {
       const response = await fetch(`http://localhost:3001/api/books?page=${page}&limit=10`);
       const data = await response.json();
-      setBooks(prevBooks => [...prevBooks, ...data]);
+      setBooks(data); // Set the books state with the new data
       setPage(prevPage => prevPage + 1);
     } catch (error) {
       console.error('Error fetching books:', error);
     }
-
+  
     setIsLoading(false);
   };
+  
 
   const handleScroll = () => {
     if (containerRef.current) {
