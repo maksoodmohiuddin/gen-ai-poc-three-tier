@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './BookList.css';
 
 function BookList() {
-  // Sample book data
-  const books = [
-    { id: 1, title: 'Book 1', author: 'Author 1' },
-    { id: 2, title: 'Book 2', author: 'Author 2' },
-    { id: 3, title: 'Book 3', author: 'Author 3' },
-  ];
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/books');
+      const data = await response.json();
+      setBooks(data);
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    }
+  };
 
   return (
     <div>
