@@ -20,7 +20,9 @@ function BookDetails() {
       setTitle(data.title);
       setAuthor(data.author);
       setDescription(data.description);
-      setPublishedDate(data.published_date);
+      // setPublishedDate(data.published_date);
+      const formattedDate = new Date(data.published_date).toISOString().substring(0, 10);
+      setPublishedDate(formattedDate);
     } catch (error) {
       console.error('Error fetching book details:', error);
     }
